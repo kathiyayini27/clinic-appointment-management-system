@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Patient Details</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+            min-height: 100vh;
+        }
+
+        .detail-card {
+            max-width: 850px;
+            margin: 40px auto;
+            border: none;
+            border-radius: 18px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 15px;
+            height: 100%;
+        }
+
+        .label-text {
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card detail-card shadow-lg p-4">
+
+        <h2 class="text-center text-primary fw-bold">
+            🏥 Patient Details
+        </h2>
+
+        <p class="text-center text-muted">
+            Patient Information & Medical Appointments
+        </p>
+
+        <hr>
+
+        <h5 class="text-primary mb-3">Personal Information</h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="label-text">Patient ID</div>
+                    <strong>#{{ patient.id }}</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="label-text">Name</div>
+                    <strong>{{ patient.name }}</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="label-text">Age</div>
+                    <strong>{{ patient.age }} years</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="label-text">Gender</div>
+                    <strong>{{ patient.gender }}</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="label-text">Phone</div>
+                    <strong>{{ patient.phone }}</strong>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-box">
+                    <div class="label-text">Email</div>
+                    <strong>{{ patient.email }}</strong>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="info-box">
+                    <div class="label-text">Address</div>
+                    <strong>{{ patient.address }}</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h5 class="text-primary mb-3">Appointment History</h5>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>{{ appointment.doctor_name }}</td>
+                        <td>{{ appointment.appointment_date|date:"d M Y" }}</td>
+                        <td>{{ appointment.appointment_time|time:"h:i A" }}</td>
+                        <td>
+                            {% if appointment.status == 'Pending' %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif appointment.status == 'Confirmed' %}
+                                <span class="badge bg-primary">Confirmed</span>
+                            {% elif appointment.status == 'Completed' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% else %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">
+                            No appointments found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="{% url 'edit_patient' patient.id %}" class="btn btn-primary">
+                Edit Patient
+            </a>
+
+            <a href="{% url 'patient_list' %}" class="btn btn-outline-primary">
+                Patient Management
+            </a>
+
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                Dashboard
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
